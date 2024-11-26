@@ -6,7 +6,10 @@ const List = ({list, deleteTask}) => {
             {
             list.map((task,index)=>{
                 return (
-                    <li key={index} className="list-group-item border-0 d-flex justify-content-between p-0">{task}
+                    <li key={index} className="list-group-item border-0 d-flex justify-content-between p-0 w-100">
+                        <span className="taskText">
+                            {task}
+                        </span>
                         <span>
                             <button id={index} className="deleteButton border-0 mb-2" onClick={deleteTask}><i className="fa-duotone fa-solid fa-x fa-xs text-danger"></i></button>
                         </span>

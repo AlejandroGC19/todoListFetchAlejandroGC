@@ -19,6 +19,10 @@
     padding-left: 3vw;
     font-size: 32px;
 }
+.taskText{
+    overflow:hidden;
+    width: 95%;
+}
 #input:focus{
     outline: none;
 }
@@ -28,5 +32,10 @@
     }
     .items-left{
         font-size: 10px;
+    }
+}
+@media (max-width: 768px) {
+    .deleteButton{
+        opacity: 0.5;
     }
 }
