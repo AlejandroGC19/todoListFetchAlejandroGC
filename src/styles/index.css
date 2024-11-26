@@ -1,12 +1,32 @@
-
-/* 
-
-    You can write your own styles here...
-    
-    
-    ...Or you can use the import command to include 
-    other sylesheets into your bunde as well, e.j:
-    
-    import 'relative/path/to/stylesheet.scss';
-
-*/
+*{
+    font-weight: lighter;
+}
+.title{
+    font-size: 130px;
+    font-weight: 100;
+    color: rgba(255, 192, 203, 0.562);
+}
+.main{
+    box-shadow:  9px 6px 9px 0px rgba(128, 128, 128, 0.527), -9px 6px 9px rgba(128, 128, 128, 0.527)
+}
+.deleteButton{
+    opacity: 0;
+}
+.deleteButton:hover{
+    opacity: 0.5;
+}
+#input, .list-group{
+    padding-left: 3vw;
+    font-size: 32px;
+}
+#input:focus{
+    outline: none;
+}
+@media (max-width: 426px) {
+    #input, .list-group li{
+        font-size: 18px;
+    }
+    .items-left{
+        font-size: 10px;
+    }
+}
