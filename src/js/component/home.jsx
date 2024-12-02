@@ -81,14 +81,13 @@ const Home = () => {
 		}
 	}
 	
-	const updateTodoList = async (taskID,taskText) => {
+	const updateTodoList = async (taskID,taskText,visible) => {
 		try{
 			let response = await fetch("https://playground.4geeks.com/todo/todos/"+ taskID,{
 				method:'PUT',
 				body: JSON.stringify({
 					"label": taskText,
-					//"is_done": !visible
-					"is_done": true
+					"is_done": visible
 				}),
 				headers: {
 					'Content-Type': 'application/json'
@@ -163,9 +162,7 @@ const Home = () => {
 	}
 	
 	function updateTask(index){
-		
-		updateTodoList(index.target.id,index.target.ariaReadOnly);
-		//updateTodoList(index.target.id,index.target.ariaReadOnly,index.target.ariaHidden);
+		updateTodoList(index.target.id,index.target.ariaReadOnly,index.target.className.includes("duotone"));
 		setListServer(listServer);
 	}
 	
