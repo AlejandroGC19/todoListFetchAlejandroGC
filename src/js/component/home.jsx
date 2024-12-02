@@ -6,9 +6,29 @@ const Home = () => {
 	const [textInput, setTextInput] = useState("");
 	const [userInput, setUserInput] = useState("");
 	const [allTasks, setAllTasks] = useState(false);
-
+	const [allUsers, setAllUsers] = useState([]);
 	const [listServer, setListServer] = useState([]);
 	const [userName, setUserName] = useState("");
+	
+	const getUsers = async () => {
+		try{
+			let response = await fetch("https://playground.4geeks.com/todo/users?offset=0&limit=100",{
+				method:'GET'
+			});
+			if (response.ok){
+				let data = await response.json();
+				setAllUsers(data.users);
+				return true;
+			}
+		} catch (error){
+			console.log("FETCH ",error);
+			return ;
+		}
+	}
+	useEffect(()=>{
+		const getUsersFirst = getUsers;
+		getUsersFirst();
+	},[]);
 
 	const createUser = async (nameText) => {
 		try{
@@ -18,14 +38,11 @@ const Home = () => {
 			setUserName(nameText);
 			getTodoList(nameText);
 			if (response.ok){
-				console.log("User created:");
+				console.log("User created: " + nameText);
+				getUsers();
 				return true;
 			} else{
-				if (response.status === 400) {
-					console.log("User loaded");
-				} else{
-					console.log("User can't be created");
-				}
+				console.log("User can't be created");
 				return false;
 			}
 		} catch (error){
@@ -33,6 +50,7 @@ const Home = () => {
 			return ;
 		}
 	}
+
 	const deleteUser = async () => {
 		try{
 			let response = await fetch("https://playground.4geeks.com/todo/users/"+userName,{
@@ -40,6 +58,7 @@ const Home = () => {
 			});
 			if (response.ok){
 				console.log("User deleted: " + userName);
+				getUsers();
 				return true;
 			} else{
 				console.log("User can't be deleted");
@@ -65,11 +84,9 @@ const Home = () => {
 			});
 			if (response.ok){
 				let data = await response.json();
-				console.log("Task added");
+				console.log("Task added: ");
 				console.log(data);
 				setListServer([...listServer, data]);
-				//localStorage.setItem(data.id,data);
-				
 				return true;
 			} else{
 				console.log("Task no added");
@@ -103,7 +120,7 @@ const Home = () => {
 			return ;
 		}
 	}
-	
+
 	const getTodoList = async (nameText) => {
 		try{
 			let response = await fetch("https://playground.4geeks.com/todo/users/"+nameText,{
@@ -155,7 +172,12 @@ const Home = () => {
 		if (e.key === "Enter") {
 			if (e.target.value === "") alert("User can't be empty");
 			else {
-				createUser(userInput);
+				if (allUsers.some((user)=>user.name === userInput)){
+					setUserName(userInput);
+					getTodoList(userInput);
+				} else {
+					createUser(userInput);
+				}
 				setUserInput("");
 			}
 		}
@@ -166,7 +188,7 @@ const Home = () => {
 		setListServer(listServer);
 	}
 	
-	function deleteAllTask () {
+	function deleteAllTask (){
 		listServer.map((task)=>{
 			deleteList(task.id, task.label);
 		});
@@ -201,7 +223,10 @@ const Home = () => {
 			<div className="container main d-flex flex-column justify-content-center w-75 mb-3">
 				<input className="w-100 border-0 mb-3" id="input" type="text" onChange={e => setTextInput(e.target.value)} onKeyDown={addTask} value={textInput} placeholder="What needs to be done?"/>
 				<List list={listServer} updateTask={updateTask} allTasks={allTasks}/>
-				<p className="items-left text-start ps-2 mt-3">{listServer.filter((task)=>!task.is_done).length} {listServer.filter((task)=>!task.is_done).length === 1 ? "item" : "items"} left</p>
+				<div className="d-flex justify-content-between mt-3">
+					<p className="items-left ps-2">{listServer.filter((task)=>!task.is_done).length} {listServer.filter((task)=>!task.is_done).length === 1 ? "item" : "items"} to do</p>
+					<p className="items-left pe-2">Total: {listServer.length} {listServer.length === 1 ? "item" : "items"}</p>
+				</div>
 			</div>
 		</>
 	);
