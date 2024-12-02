@@ -178,8 +178,8 @@ const Home = () => {
 
 	function deleteUserFunc (){
 		deleteUser();
-		setUserName("")
-		getTodoList();
+		setUserName("");
+		setListServer([]);
 	}
 
 	return (

@@ -26,6 +26,9 @@
 #input:focus{
     outline: none;
 }
+.fa-circle-check{
+    color: green;
+}
 @media (max-width: 426px) {
     #input, .list-group li{
         font-size: 18px;
