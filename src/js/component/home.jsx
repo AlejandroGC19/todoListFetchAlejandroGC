@@ -200,34 +200,42 @@ const Home = () => {
 		setUserName("");
 		setListServer([]);
 	}
+	function logOut (){
+		setUserName("");
+		setListServer([]);
+	}
 
 	return (
 		<>
 			<h1 className="title mb-3 text-center">todos</h1>
-			<h2 className="text-center my-3">User: {userName}</h2>
-			<div className="container d-flex justify-content-center gap-3 my-4">
-				<div className="row d-flex justify-content-between justify-items-center w-75">
-					<div className="col-12 col-lg-5 my-4">
-						<div className="input-group flex-nowrap">
-							<span className="input-group-text" id="addon-wrapping"><i className="fa-regular fa-user"></i></span>
-							<input type="text" className="form-control" onChange={e => setUserInput(e.target.value)} onKeyDown={addUser} value={userInput} placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping"/>
-						</div>
-					</div>
-					<button className="btn btn-secondary col-5 col-lg-2 m-2" onClick={()=>setAllTasks(!allTasks)}>{allTasks ? "Hide done" : "Show all"} tasks</button>
-					<button className="btn btn-warning col-5 col-lg-2 m-2" onClick={deleteUserFunc}>Delete user</button>
-					<div className="d-flex justify-content-center col-lg-2">
-						<button className="btn btn-danger col-12 m-2" onClick={deleteAllTask}>Clear TODO list</button>
+			{userName === '' ?
+			<div className="container d-flex justify-content-center">
+				<div className="row col-11 col-md-6">
+					<div className="input-group">
+						<span className="input-group-text" id="addon-wrapping"><i className="fa-regular fa-user"></i></span>
+						<input type="text" className="form-control" onChange={e => setUserInput(e.target.value)} onKeyDown={addUser} value={userInput} placeholder="Username" aria-label="Username" aria-describedby="addon-wrapping"/>
 					</div>
 				</div>
 			</div>
-			<div className="container main d-flex flex-column justify-content-center w-75 mb-3">
-				<input className="w-100 border-0 mb-3" id="input" type="text" onChange={e => setTextInput(e.target.value)} onKeyDown={addTask} value={textInput} placeholder="What needs to be done?"/>
-				<List list={listServer} updateTask={updateTask} allTasks={allTasks}/>
-				<div className="d-flex justify-content-between mt-3">
-					<p className="items-left ps-2">{listServer.filter((task)=>!task.is_done).length} {listServer.filter((task)=>!task.is_done).length === 1 ? "item" : "items"} to do</p>
-					<p className="items-left pe-2">Total: {listServer.length} {listServer.length === 1 ? "item" : "items"}</p>
+			: <div>
+				<h2 className="text-center my-3">User: {userName}</h2>
+				<div className="container d-flex justify-content-center gap-3 my-4">
+					<div className="row d-flex justify-content-center justify-items-center w-75">
+						<button className="btn btn-primary col-5 col-lg-2 m-2" onClick={()=>setAllTasks(!allTasks)}>{allTasks ? "Hide done" : "Show all"} tasks</button>
+						<button className="btn btn-warning col-5 col-lg-2 m-2" onClick={deleteUserFunc}>Delete user</button>
+						<button className="btn btn-danger col-5 col-lg-2 m-2" onClick={deleteAllTask}>Clear TODO list</button>
+						<button className="btn btn-secondary col-5 col-lg-2 m-2" onClick={logOut}>Logout</button>
+					</div>
 				</div>
-			</div>
+				<div className="container main d-flex flex-column justify-content-center w-75 mb-3">
+					<input className="w-100 border-0 mb-3" id="input" type="text" onChange={e => setTextInput(e.target.value)} onKeyDown={addTask} value={textInput} placeholder="What needs to be done?"/>
+					<List list={listServer} updateTask={updateTask} allTasks={allTasks}/>
+					<div className="d-flex justify-content-between mt-3">
+						<p className="items-left ps-2">{listServer.filter((task)=>!task.is_done).length} {listServer.filter((task)=>!task.is_done).length === 1 ? "item" : "items"} to do</p>
+						<p className="items-left pe-2">Total: {listServer.length} {listServer.length === 1 ? "item" : "items"}</p>
+					</div>
+				</div>
+			</div>}
 		</>
 	);
 };
